@@ -1,0 +1,29 @@
+# Configuration for Cog ⚙️
+# Reference: https://github.com/replicate/cog/blob/main/docs/yaml.md
+
+build:
+  # set to true if your model requires a GPU
+  gpu: true
+  cuda: "11.3"
+
+  # a list of ubuntu apt packages to install
+  # system_packages:
+
+  # python version in the form '3.8' or '3.8.12'
+  python_version: "3.7"
+
+  # a list of packages in the format <package-name>==<version>
+  python_packages:
+    - "numpy==1.21.6"
+    - "pillow==7.1.2"
+    - "smart-open[s3]==5.2.1"
+    - "torch==1.12.0"
+    - "torchvision==0.13.0"
+    - "tqdm==4.64.0"
+
+  # commands run after the environment is setup
+  run:
+    - "export PYTHONPATH=.:$PYTHONPATH"
+
+# predict.py defines how predictions are run on your model
+predict: "predict.py:Predictor"
