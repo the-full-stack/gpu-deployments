@@ -22,6 +22,11 @@ from text_recognizer.stems.paragraph import ParagraphStem
 STAGED_MODEL_DIRNAME = Path(__file__).resolve().parent / "artifacts" / "paragraph-text-recognizer"
 MODEL_FILE = "model.pt"
 
+if torch.cuda.is_available():
+    device = torch.device("cuda:0")
+else:
+    device = torch.device("cpu")
+
 
 class ParagraphTextRecognizer:
     """Recognizes a paragraph of text in an image."""
@@ -30,6 +35,7 @@ class ParagraphTextRecognizer:
         if model_path is None:
             model_path = STAGED_MODEL_DIRNAME / MODEL_FILE
         self.model = torch.jit.load(model_path)
+        self.model.to(device)
         self.mapping = self.model.mapping
         self.ignore_tokens = self.model.ignore_tokens
         self.stem = ParagraphStem()
@@ -41,8 +47,8 @@ class ParagraphTextRecognizer:
         if not isinstance(image, Image.Image):
             image_pil = util.read_image_pil(image, grayscale=True)
 
-        image_tensor = self.stem(image_pil).unsqueeze(axis=0)
-        y_pred = self.model(image_tensor)[0]
+        image_tensor = self.stem(image_pil).unsqueeze(axis=0).to(device)
+        y_pred = self.model(image_tensor)[0].to("cpu")
         pred_str = convert_y_label_to_string(y=y_pred, mapping=self.mapping, ignore_tokens=self.ignore_tokens)
 
         return pred_str
