@@ -1,0 +1,32 @@
+###
+# this container image requires a build secret that includes the W&B API key.
+# once you've logged into W&B on the building machine, run
+#
+#     docker build --secret id=netrc,src=$HOME/.netrc -t text-recognizer-banana-base -f Dockerfile.base .
+#
+###
+
+# 🍌: Must use a Cuda version 11+
+FROM pytorch/pytorch:1.12.0-cuda11.3-cudnn8-runtime
+
+WORKDIR /
+
+# 🍌: Install git
+RUN apt-get update && apt-get install -y git
+
+# 🍌: Install python packages
+RUN pip3 install --upgrade pip
+ADD requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+# 🍌: We add the banana boilerplate here
+ADD server.py .
+
+# 🍌: Add your model weight files
+## add source
+ADD text_recognizer/ text_recognizer/
+## handle environment
+ENV PYTHONPATH=.
+## download model weights from W&B
+##  using the .netrc secret file provided in build with id netrc
+RUN --mount=type=secret,id=netrc,dst=/root/.netrc python3 text_recognizer/get_model.py --entity=DEFAULT --from_project=fsdl-text-recognizer-2021-training
