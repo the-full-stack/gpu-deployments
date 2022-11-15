@@ -1,6 +1,9 @@
-# banana does not allow custom docker build commands
-#   as of 2022-10-11
-# so we separate out the final simple piece of the build here.
+# banana only recently (2022-11-15) added custom build commands,
+#  including the addition of secrets via `ARG/--build-arg`,
+#  so we've split the build into two separate Dockerfiles,
+#  where the first uses a custom build command and the second
+#  builds on top of it.
+# This is the second file, which is sent to banana to build.
 
 FROM fullstackdeeplearning/text-recognizer-banana-base
 
