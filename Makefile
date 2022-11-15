@@ -40,7 +40,7 @@ wandb: ## installs wandb and authenticates
 	grep "wandb" requirements.txt | xargs pip install
 	wandb login
 
-requirements: ## installs or checks all requirements: Python libraries, docker, cog, GPUs
+environment: ## installs or checks all requirements: Python libraries, docker, cog, GPUs
 	pip install -r requirements.txt
 	# docker is required locally
 	docker --version
