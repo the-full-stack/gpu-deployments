@@ -3,9 +3,10 @@
 # 🍌: This file is boilerplate for the http server, and follows a strict interface.
 
 # 🍌: Instead, edit the init() and inference() functions in app.py
+import subprocess
 
 from sanic import Sanic, response
-import subprocess
+
 import app as user_src
 
 # 🍌: We do the model load-to-GPU step on server startup
