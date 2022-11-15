@@ -32,10 +32,17 @@ or call `make environment` to get everything needed to run the model backend bar
 
 ## Invoking the model on banana via the HTTP API
 
-So to deploy, just push this to `main` on some GitHub repo
+To deploy on `api.banana.dev`,
+just push this to `main` on some GitHub repo
 and then use the
 [banana UI](https://app.banana.dev/)
 to add it to your deployed models.
+
+Note that builds can take tens of minutes,
+because Banana attempts model optimizations behind the scenes,
+but the model inference service should become available in just a few minutes.
+You can watch the build progress in the
+[banana UI](https://app.banana.dev).
 
 The `invoke_requests.py` script uses the `requests` Python library
 to send a request to a model running on `api.banana.dev`.
