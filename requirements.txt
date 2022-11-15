@@ -4,4 +4,7 @@ sanic==22.6.2
 smart-open[s3]==5.2.1
 torchvision==0.13.0
 tqdm==4.64.0
+# required for pulling model weights
 wandb==0.12.17
+# required for running inference remotely
+python-dotenv==0.21
