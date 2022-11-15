@@ -1,3 +1,7 @@
+<div align="center">
+    <img src="https://fsdl-public-assets.s3.us-west-2.amazonaws.com/gpu-deploy-logo.png" width=25%>
+</div>
+
 # GPU Deployments of the FSDL Text Recognizer
 
 This repo collects up some example GPU deployments of a simple deep network, the
