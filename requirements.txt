@@ -1,2 +1,4 @@
 # required for pulling model weights
-wandb
+wandb==0.12.17
+# required for running inference remotely
+python-dotenv==0.21

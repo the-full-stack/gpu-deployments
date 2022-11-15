@@ -4,42 +4,41 @@ import os
 import requests
 import time
 
+from dotenv import load_dotenv
+
+
 
 REPLICATE_API_URL = "https://api.replicate.com/v1/predictions"
-
-MODEL_VERSION = "04014ed6998f36e9ed94f9d90bc5ff8bdc379a454b119111ceab3a8d158005fa"
 EXAMPLE_URL = "https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png"
-REPLICATE_API_TOKEN = os.environ["REPLICATE_API_TOKEN"]
 
-HEADERS = {
-        "Authorization": f"Token {REPLICATE_API_TOKEN}",
-        "Content-Type": "application/json"
-    }
+def predict_replicate(api_token, model_version, image_url=EXAMPLE_URL):
 
-
-def predict_replicate(image_url=EXAMPLE_URL):
+    headers = {
+            "Authorization": f"Token {api_token}",
+            "Content-Type": "application/json"
+        }
 
     data = {
-        "version": MODEL_VERSION,
+        "version": model_version,
         "input": {"image": image_url}
     }
 
-    response = requests.post(REPLICATE_API_URL, headers=HEADERS, data=json.dumps(data))
+    response = requests.post(REPLICATE_API_URL, headers=headers, data=json.dumps(data))
     response.raise_for_status()
 
     if response.status_code == 201:
         get_url = response.json()["urls"]["get"]
 
-        prediction = _get_from_replicate(get_url)
+        prediction = _get_from_replicate(get_url, headers)
 
         return prediction
 
 
-def _get_from_replicate(get_url):
+def _get_from_replicate(get_url, headers):
     awaiting_prediction = True
 
     while awaiting_prediction:
-        response = requests.get(get_url, headers=HEADERS)
+        response = requests.get(get_url, headers=headers)
         response.raise_for_status()
 
         if response.json()["status"] == "succeeded":
@@ -53,5 +52,17 @@ def _get_from_replicate(get_url):
             time.sleep(0.5)
 
 
+def _setup_secrets():
+    load_dotenv()  # get environment variables
+
+    replicate_api_token = os.environ["REPLICATE_API_TOKEN"]
+    assert replicate_api_token is not None, "define $REPLICATE_API_TOKEN to perform remote inference"
+
+    model_version = os.environ["MODEL_VERSION"]
+    assert model_version is not None, "define $MODEL_VERSION to perform remote inference"
+
+    return replicate_api_token, model_version
+
+
 if __name__ == "__main__":
-    print(predict_replicate())
+    print(predict_replicate(*_setup_secrets()))
