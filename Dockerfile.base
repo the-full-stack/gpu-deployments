@@ -29,4 +29,4 @@ ADD text_recognizer/ text_recognizer/
 ENV PYTHONPATH=.
 ## download model weights from W&B
 ##  using the .netrc secret file provided in build with id netrc
-RUN --mount=type=secret,id=netrc,dst=/root/.netrc python3 text_recognizer/get_model.py --entity=DEFAULT --from_project=fsdl-text-recognizer-2021-training
+RUN --mount=type=secret,id=netrc,dst=/root/.netrc python3 text_recognizer/get_model.py --entity=cfrye59 --from_project=fsdl-text-recognizer-2021-training
