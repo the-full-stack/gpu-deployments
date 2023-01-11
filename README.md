@@ -29,3 +29,13 @@ Each deployment is on a different branch.
 ### [Deployment docs](https://www.banana.dev/docs/how-to-deploy-banana)
 
 ### [Pricing](https://www.banana.dev/#pricing)
+
+## 🟩 [`/modal`](https://modal.com)
+
+### [Code on GitHub](https://github.com/full-stack-deep-learning/gpu-deployments/tree/modal/)
+
+### [Model on modal.run](https://charlesfrye--fsdl-text-recognizer.modal.run/)
+
+### [Deployment docs](https://modal.com/docs/guide/ex/dreambooth_app)
+
+### [Pricing](https://modal.com/pricing)
