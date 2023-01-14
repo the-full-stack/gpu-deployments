@@ -20,7 +20,7 @@ The `cog` building process is configured by the `cog.yaml` file.
 See Replicate's deployment guide [here](https://replicate.com/docs/guides/push-a-model)
 for a more detailed walkthrough.
 
-## Building with `make`
+## Building with `make` and local testing
 
 The provided `Makefile` is intended to make it easier
 to develop and deploy locally.
@@ -40,14 +40,24 @@ which build and run the container locally.
 Use `make cog_shell` to spin up a shell inside
 of the inference container.
 
-## Deployment
+## Deployment to Replicate
 
 To deploy a model and run inference on `replicate`,
 you'll also need a [Replicate account](https://replicate.com/join).
+
 After you've set one up,
 create a `.env` file
-and add your user name and API token.
-Then, run `make cog_push`
-and copy the model version number into the `.env` file as well.
+and add your user name and API token,
+which you can find on Replicate's website
+[here](https://replicate.com/account).
+
+Then, call `make cog_auth`
+to authenticate to Replicate's container image registry.
+In the process, you'll generate a `cog` CLI token --
+that's separate from your Replicate API token!
+
+Once you've authenticated to the registry, run `make cog_push`
+and copy the model version number that gets returned into the `.env` file as well.
+
 Finally, run `make remote_inference` to test
 that the model runs.
