@@ -9,6 +9,9 @@ endif
 .PHONY: help
 .DEFAULT_GOAL := help
 
+SHELL:= /bin/zsh
+#export REPLICATE_API_TOKEN='5b48a9692b7df426b1db19d0f0b6a7d995e309eb'
+
 help: ## get a list of all the targets, and their short descriptions
 	@# source for the incantation: https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | awk 'BEGIN {FS = ":.*?##"}; {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}'
@@ -18,6 +21,8 @@ deploy: cog_build cog_push ## deploys to replicate
 test: local_inference ## runs a local inference from scratch
 
 remote_inference: ## runs an example inference on replicate, higher latencies in the minute range
+#	$(info $(SHELL))
+	$(info $(REPLICATE_API_TOKEN))
 	python invoke_requests.py
 
 local_inference: wandb model_weights ## runs an example inference locally

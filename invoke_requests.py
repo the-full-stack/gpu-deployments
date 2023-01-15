@@ -6,12 +6,20 @@ import time
 
 from dotenv import load_dotenv
 
+# load_dotenv()  # get environment variables
+
+# replicate_api_token = os.environ["REPLICATE_API_TOKEN"]
+
+# print(f"Token {replicate_api_token}")
 
 
-REPLICATE_API_URL = "https://api.replicate.com/v1/predictions"
+REPLICATE_API_URL =  "https://api.replicate.com/v1/predictions"
 EXAMPLE_URL = "https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png"
 
 def predict_replicate(api_token, model_version, image_url=EXAMPLE_URL):
+
+    print(f"Token {api_token}")
+    print(f"Version {model_version}")
 
     headers = {
             "Authorization": f"Token {api_token}",
