@@ -24,8 +24,10 @@ local_inference: wandb model_weights ## runs an example inference locally
 	cog predict -i image=https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png
 
 cog_push: cog_auth ## pushes container image to replicate container repository
-	cog push
-	echo "Don't forget to update the \$$MODEL_VERSION in .env before running remote inference!"
+	cog push r8.im/$(REPLICATE_USER_NAME)/text-recognizer-gpu:latest
+	@echo
+	@echo "Don't forget to update the \$$MODEL_VERSION in .env before running remote inference!"
+	@echo "You can find your \$$MODEL_VERSION info at https://replicate.com/$(REPLICATE_USER_NAME)/text-recognizer-gpu"
 
 cog_build: wandb model_weights ## creates the deployable container image
 	cog build -t r8.im/$(REPLICATE_USER_NAME)/text-recognizer-gpu:latest
@@ -48,7 +50,7 @@ environment: ## installs or checks all requirements: Python libraries, docker, c
 	@if [ -z $$(which cog) ]; then\
 		sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m` && \
 		sudo chmod +x /usr/local/bin/cog; \
-	fi	
+	fi
 	cog --version
 	# GPUs are required locally
 	nvidia-smi
