@@ -3,35 +3,24 @@ import json
 import os
 import requests
 import time
-
-from dotenv import load_dotenv
-
-# load_dotenv()  # get environment variables
-
-# replicate_api_token = os.environ["REPLICATE_API_TOKEN"]
-
-# print(f"Token {replicate_api_token}")
-
+import argparse
 
 REPLICATE_API_URL =  "https://api.replicate.com/v1/predictions"
 EXAMPLE_URL = "https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png"
 
-def predict_replicate(api_token, model_version, image_url=EXAMPLE_URL):
-
-    print(f"Token {api_token}")
-    print(f"Version {model_version}")
+def predict_replicate(args, api_url=REPLICATE_API_URL, image_url=EXAMPLE_URL):
 
     headers = {
-            "Authorization": f"Token {api_token}",
+            "Authorization": f"Token {str(args.token)}",
             "Content-Type": "application/json"
         }
 
     data = {
-        "version": model_version,
+        "version": str(args.version),
         "input": {"image": image_url}
     }
 
-    response = requests.post(REPLICATE_API_URL, headers=headers, data=json.dumps(data))
+    response = requests.post(api_url, headers=headers, data=json.dumps(data))
     response.raise_for_status()
 
     if response.status_code == 201:
@@ -60,17 +49,11 @@ def _get_from_replicate(get_url, headers):
             time.sleep(0.5)
 
 
-def _setup_secrets():
-    load_dotenv()  # get environment variables
-
-    replicate_api_token = os.environ["REPLICATE_API_TOKEN"]
-    assert replicate_api_token is not None, "define $REPLICATE_API_TOKEN to perform remote inference"
-
-    model_version = os.environ["MODEL_VERSION"]
-    assert model_version is not None, "define $MODEL_VERSION to perform remote inference"
-
-    return replicate_api_token, model_version
-
-
 if __name__ == "__main__":
-    print(predict_replicate(*_setup_secrets()))
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--token", type=str, help='pass in REPLICATE_API_TOKEN as a string', required=True)
+    parser.add_argument("--version", type=str, help='pass in MODEL_VERSION as a string', required=True)
+    args = parser.parse_args()
+
+    print(predict_replicate(args))

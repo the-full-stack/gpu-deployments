@@ -43,10 +43,10 @@ of the inference container.
 ## Deployment
 
 To deploy a model and run inference on `replicate`,
-you'll also need a [Replicate account](https://replicate.com/join).
+you'll also need a [Replicate account](https://replicate.com/join).  
 After you've set one up,
 create a `.env` file
-and add your user name and API token.
+and add your user name and API token, and 'Create a new model' on your account with the name 'text-recognizer-gpu'. 
 Then, run `make cog_push`
 and copy the model version number into the `.env` file as well.
 Finally, run `make remote_inference` to test
