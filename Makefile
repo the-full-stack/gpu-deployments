@@ -19,8 +19,12 @@ deploy: model_weights modal_auth ## deploys to modal, see output for URL, latenc
 API_URL=https://$(MODAL_USER_NAME)--fsdl-text-recognizer.modal.run/run
 data=$(shell base64 -w0 -i a01-077.png)
 remote_inference: ## runs an example inference on Modal, after deployment finished
+	@echo "###"
+	@echo "# 🥞: Running inference at $(API_URL)"
+	@echo "###"
 	@(echo -n '{ "data": ["data:image/png;base64,'$(data)'"] }') \
 		| curl -s -X POST "$(API_URL)/predict" -H 'Content-Type: application/json' -d @-
+	@echo ""
 
 debugger: modal_auth ## starts a debugger in the terminal running on Modal's infra
 	modal run app::stub.debug
@@ -29,8 +33,14 @@ model_weights: environment ## downloads model weights from wandb
 	wandb login
 	python text_recognizer/get_model.py --entity=cfrye59
 
-modal_auth: ## confirms authentication with modal
+modal_auth: ## confirms authentication with modal, using secrets from `.env` file
 	@modal token set --token-id $(MODAL_TOKEN_ID) --token-secret $(MODAL_TOKEN_SECRET)
+
+modal_token: ## creates token ID and secret for authentication with modal
+	modal token new
+	@echo "###"
+	@echo "# 🥞: Copy the token info from the file above into .env"
+	@echo "###"
 
 environment: ## checks and installs missing requirements
 	pip install -q -r requirements.txt

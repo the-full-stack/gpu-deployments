@@ -37,8 +37,11 @@ You can [request access here](https://modal.com/signup).
 
 Then, once you've followed the instructions for setting up the client,
 you should have a Modal username (from your GitHub) and token.
-Add these to a `.env` file that looks like `.env.example`.
-Call `make modal_auth` to authenticate with Modal.
+You can also call `make modal_token` to create a new token.
+
+Tokens have two parts: an ID and a secret.
+Add both of these to a `.env` file that looks like `.env.example`.
+Call `make modal_auth` to confirm authentication with Modal.
 
 ## Deploying the model
 
