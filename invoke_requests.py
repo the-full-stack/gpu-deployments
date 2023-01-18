@@ -3,9 +3,7 @@ import json
 import os
 import requests
 import time
-
-from dotenv import load_dotenv
-
+import argparse
 
 
 REPLICATE_API_URL = "https://api.replicate.com/v1/predictions"
@@ -52,17 +50,10 @@ def _get_from_replicate(get_url, headers):
             time.sleep(0.5)
 
 
-def _setup_secrets():
-    load_dotenv()  # get environment variables
-
-    replicate_api_token = os.environ["REPLICATE_API_TOKEN"]
-    assert replicate_api_token is not None, "define $REPLICATE_API_TOKEN to perform remote inference"
-
-    model_version = os.environ["MODEL_VERSION"]
-    assert model_version is not None, "define $MODEL_VERSION to perform remote inference"
-
-    return replicate_api_token, model_version
-
-
 if __name__ == "__main__":
-    print(predict_replicate(*_setup_secrets()))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--api_token", type=str, help="A token for api.replicate.com", required=True)
+    parser.add_argument("--model_version", type=str, help="The version identifier for your model", required=True)
+    args = vars(parser.parse_args())
+
+    print(predict_replicate(**args))

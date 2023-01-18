@@ -51,10 +51,17 @@ and add your user name and API token,
 which you can find on Replicate's website
 [here](https://replicate.com/account).
 
-Then, call `make cog_auth`
+Then, we have one manual step:
+go to [https://replicate.com/create](https://replicate.com/create)
+and make a new model page called `fsdl-text-recognizer-gpu`.
+
+Next, call `make cog_auth`
 to authenticate to Replicate's container image registry.
 In the process, you'll generate a `cog` CLI token --
 that's separate from your Replicate API token!
+
+Once you have it, add it to the `.env` file
+as the `REPLICATE_CLI_TOKEN`.
 
 Once you've authenticated to the registry, run `make cog_push`
 and copy the model version number that gets returned into the `.env` file as well.
